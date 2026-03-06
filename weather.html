@@ -86,7 +86,7 @@
 </head>
 <body>
 
-<div id="pw-overlay">
+<div id="pw-overlay" style="display:none">
   <div class="pw-palm">🌴</div>
   <h2>Key West 2026</h2>
   <p>Enter the trip password to continue</p>
@@ -267,7 +267,10 @@ function renderTripStatic() {
   document.getElementById('trip-forecast').innerHTML = `<div class="trip-forecast">${html}</div>`;
 }
 
-loadWeather();
+// Only auto-load if already authenticated
+if (sessionStorage.getItem('kw2026_auth') === '1') {
+  loadWeather();
+}
 </script>
 </body>
 </html>

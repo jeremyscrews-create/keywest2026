@@ -195,7 +195,7 @@
 
   /* ── PASSWORD OVERLAY ── */
   #pw-overlay {
-    position: fixed; inset: 0; z-index: 9999;
+    position: fixed; inset: 0; z-index: 9999; min-height: 100vh; min-width: 100vw;
     background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%);
     display: flex; align-items: center; justify-content: center;
     flex-direction: column; gap: 20px;
@@ -255,7 +255,7 @@
 </head>
 <body>
 
-<div id="pw-overlay">
+<div id="pw-overlay" style="display:none">
   <div class="pw-palm">🌴</div>
   <h2>Key West 2026</h2>
   <p>Enter the trip password to continue</p>
@@ -267,16 +267,6 @@
 </div>
 
 <div class="site-nav"><a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 KW26</a><a href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a><a href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a><a class="active" href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a><a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a><a href="https://jeremyscrews-create.github.io/keywest2026/poll.html">🗳️ Vote</a><a href="https://jeremyscrews-create.github.io/keywest2026/weather.html">🌤️ Weather</a><a href="https://jeremyscrews-create.github.io/keywest2026/food.html">🍽️ Food Guide</a><a href="https://jeremyscrews-create.github.io/keywest2026/budget.html">💰 Budget</a></div>
-
-<h2>Key West 2026</h2>
-  <p>Enter the trip password to continue</p>
-  <div id="pw-box">
-    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
-    <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
-  </div>
-  <div id="pw-error"></div>
-</div>
-
 
 
 <div class="hero">

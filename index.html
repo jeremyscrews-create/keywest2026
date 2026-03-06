@@ -87,10 +87,19 @@
   .hero-stat span { display: block; font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 2px; }
 
   /* ── COUNTDOWN ── */
-  .countdown-bar {
-    background: rgba(0,0,0,0.2);
-    padding: 16px 24px;
-    text-align: center;
+  .hero-countdown {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .hero-countdown-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-weight: 600;
   }
 
   .countdown-inner {
@@ -271,7 +280,7 @@
 
   /* ── PASSWORD OVERLAY ── */
   #pw-overlay {
-    position: fixed; inset: 0; z-index: 9999;
+    position: fixed; inset: 0; z-index: 9999; min-height: 100vh; min-width: 100vw;
     background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%);
     display: flex; align-items: center; justify-content: center;
     flex-direction: column; gap: 20px;
@@ -331,7 +340,7 @@
 </head>
 <body>
 
-<div id="pw-overlay">
+<div id="pw-overlay" style="display:none">
   <div class="pw-palm">🌴</div>
   <h2>Key West 2026</h2>
   <p>Enter the trip password to continue</p>
@@ -344,16 +353,6 @@
 
 <div class="site-nav"><a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 KW26</a><a class="active" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a><a href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a><a href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a><a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a><a href="https://jeremyscrews-create.github.io/keywest2026/poll.html">🗳️ Vote</a><a href="https://jeremyscrews-create.github.io/keywest2026/weather.html">🌤️ Weather</a><a href="https://jeremyscrews-create.github.io/keywest2026/food.html">🍽️ Food Guide</a><a href="https://jeremyscrews-create.github.io/keywest2026/budget.html">💰 Budget</a></div>
 
-<h2>Key West 2026</h2>
-  <p>Enter the trip password to continue</p>
-  <div id="pw-box">
-    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
-    <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
-  </div>
-  <div id="pw-error"></div>
-</div>
-
-
 
 <div class="hero">
   <span class="hero-palm">🌴</span>
@@ -365,23 +364,29 @@
     <div class="hero-stat"><span>Depart</span>Sun 1:00 PM · EYW</div>
     <div class="hero-stat"><span>Transport</span>Golf Cart 🛵</div>
   </div>
-</div>
 
-<div class="countdown-bar">
-  <div class="countdown-inner" id="countdown">
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-days">--</div>
-      <div class="countdown-label">Days</div>
-    </div>
-    <div class="countdown-sep">:</div>
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-hours">--</div>
-      <div class="countdown-label">Hours</div>
-    </div>
-    <div class="countdown-sep">:</div>
-    <div class="countdown-unit">
-      <div class="countdown-num" id="cd-mins">--</div>
-      <div class="countdown-label">Minutes</div>
+  <div class="hero-countdown">
+    <div class="hero-countdown-label">Time until wheels up ✈️</div>
+    <div class="countdown-inner" id="countdown">
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-days">--</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-hours">--</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-mins">--</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-sep">:</div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-secs">--</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
     </div>
   </div>
 </div>
@@ -566,13 +571,15 @@
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
     document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
     document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
     document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+    document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
   }
 
   tick();
-  setInterval(tick, 30000);
+  setInterval(tick, 1000);
 </script>
 
 <script>
