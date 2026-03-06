@@ -291,7 +291,7 @@
   <!-- NAV CARDS -->
   <div class="nav-grid">
 
-    <a class="nav-card" href="#">
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">
       <div class="nav-card-stripe" style="background:var(--orange)"></div>
       <div class="nav-card-body">
         <span class="nav-card-icon">🗓️</span>
@@ -304,7 +304,7 @@
       </div>
     </a>
 
-    <a class="nav-card" href="#">
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">
       <div class="nav-card-stripe" style="background:var(--blue)"></div>
       <div class="nav-card-body">
         <span class="nav-card-icon">📋</span>
@@ -317,7 +317,7 @@
       </div>
     </a>
 
-    <a class="nav-card" href="#">
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/packing.html">
       <div class="nav-card-stripe" style="background:var(--green)"></div>
       <div class="nav-card-body">
         <span class="nav-card-icon">🧳</span>
@@ -418,5 +418,13 @@
   setInterval(tick, 30000);
 </script>
 
+<script>
+  function reportHeight() {
+    window.parent.postMessage({ height: document.body.scrollHeight }, "*");
+  }
+  window.addEventListener("load", reportHeight);
+  window.addEventListener("resize", reportHeight);
+  new MutationObserver(reportHeight).observe(document.body, { subtree: true, childList: true, attributes: true });
+</script>
 </body>
 </html>
