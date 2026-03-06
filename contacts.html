@@ -255,7 +255,7 @@
 </head>
 <body>
 
-<div id="pw-overlay" style="display:none">
+<div id="pw-overlay">
   <div class="pw-palm">🌴</div>
   <h2>Key West 2026</h2>
   <p>Enter the trip password to continue</p>
@@ -279,7 +279,7 @@
 
   <div class="alert-box">
     <span class="alert-icon">⚠️</span>
-    <div><strong>Still needs scheduling:</strong> Golf cart pickup (Sunset Watersports), Boat Check-in, and Sunset Music Cruise. Call or book online before March 19.</div>
+    <div><strong>All confirmed!</strong> Golf cart pickup Sat 9:30 AM · Sunset Sip &amp; Sail Sat 6–8 PM · Booking #336757860</div>
   </div>
 
   <!-- HOTEL -->
@@ -437,7 +437,7 @@
             </div>
             <div class="contact-row">
               <span class="contact-row-label">Cart Pick</span>
-              <span>Saturday, March 21 · 9:15 AM</span>
+              <span>Saturday, March 21 · 9:30 AM ✓</span>
             </div>
             <div class="contact-row">
               <span class="contact-row-label">Cart Drop</span>
@@ -445,14 +445,14 @@
             </div>
             <div class="contact-row">
               <span class="contact-row-label">Boat</span>
-              <span>Check-in Sat 4:15 PM · Same location</span>
+              <span>Check-in Sat 5:15 PM · Same location (Historic Seaport)</span>
             </div>
             <div class="contact-row">
               <span class="contact-row-label">Notes</span>
-              <span>One day rental only. Boat cruise sails 6:00–8:00 PM.</span>
+              <span>One day rental only. Cruise confirmed — Booking #336757860.</span>
             </div>
           </div>
-          <div class="status-pill" style="background:#fff8e6;color:#b07d00">⚠️ Needs Scheduling</div>
+          <div class="status-pill" style="background:#fff8e6;color:#1a6e3c">⚠️ Needs Scheduling</div>
         </div>
       </div>
 
@@ -462,18 +462,18 @@
           <div class="contact-top">
             <div class="contact-icon" style="background:var(--orange-light)">🎶</div>
             <div>
-              <div class="contact-name">Sunset Music Cruise</div>
-              <span class="contact-tag" style="background:var(--orange-light);color:var(--orange)">Sat · Grand Finale</span>
+              <div class="contact-name">Sunset Sip &amp; Sail</div>
+              <span class="contact-tag" style="background:var(--green-light);color:var(--green)">Sat · Grand Finale ✓</span>
             </div>
           </div>
           <div class="contact-rows">
             <div class="contact-row">
               <span class="contact-row-label">Time</span>
-              <span>Saturday, March 21 · Board 5:15 PM · Sail 6–8 PM</span>
+              <span>Saturday, March 21 · 6:00 PM – 8:00 PM</span>
             </div>
             <div class="contact-row">
               <span class="contact-row-label">Departs</span>
-              <span>Key West Historic Seaport</span>
+              <span>Sunset Watersports · 720 Seminole St</span>
             </div>
             <div class="contact-row">
               <span class="contact-row-label">Dress</span>
@@ -484,7 +484,7 @@
               <span>Sunset Watersports — better drinks & live music (recommended over Fury Commotion)</span>
             </div>
           </div>
-          <div class="status-pill" style="background:#fff8e6;color:#b07d00">⚠️ Needs Scheduling</div>
+          <div class="status-pill" style="background:#fff8e6;color:#1a6e3c">⚠️ Needs Scheduling</div>
         </div>
       </div>
 
@@ -539,25 +539,25 @@
 
 <script>
   (function() {
-    const PASS = "ConchyKong";
-    const KEY = "kw2026_auth";
-    const overlay = document.getElementById('pw-overlay');
-    if (sessionStorage.getItem(KEY) === '1') {
+    var overlay = document.getElementById('pw-overlay');
+    if (sessionStorage.getItem('kw2026_auth') === '1') {
       overlay.style.display = 'none';
     } else {
-      document.body.classList.add('locked');
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
   })();
 
   function checkPw() {
-    const val = document.getElementById('pw-input').value;
-    const err = document.getElementById('pw-error');
+    var val = document.getElementById('pw-input').value;
+    var err = document.getElementById('pw-error');
     if (val === 'ConchyKong') {
       sessionStorage.setItem('kw2026_auth', '1');
       document.getElementById('pw-overlay').style.display = 'none';
-      document.body.classList.remove('locked');
+      document.body.style.overflow = '';
+      if (typeof loadWeather === 'function') loadWeather();
     } else {
-      err.textContent = 'Incorrect password — try again';
+      if (err) err.textContent = 'Incorrect password — try again';
       document.getElementById('pw-input').value = '';
       document.getElementById('pw-input').focus();
     }
