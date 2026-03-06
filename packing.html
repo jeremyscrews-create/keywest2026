@@ -233,7 +233,7 @@
 
   /* ── PASSWORD OVERLAY ── */
   #pw-overlay {
-    position: fixed; inset: 0; z-index: 9999;
+    position: fixed; inset: 0; z-index: 9999; min-height: 100vh; min-width: 100vw;
     background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%);
     display: flex; align-items: center; justify-content: center;
     flex-direction: column; gap: 20px;
@@ -288,6 +288,80 @@
   }
   .site-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
   .site-nav a.active { color: #ffd98a; }
+
+
+  /* ── NOTES SECTION ── */
+  .notes-section { margin-bottom: 40px; }
+
+  .notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+  .notes-card {
+    background: #fff; border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.07);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+  }
+
+  .notes-card-header {
+    padding: 12px 16px 10px;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid #f0ece4;
+  }
+
+  .notes-card-icon {
+    width: 32px; height: 32px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+
+  .notes-card-name {
+    font-weight: 700; font-size: 14px; color: var(--ocean);
+  }
+
+  .notes-card-sub {
+    font-size: 10px; color: var(--muted); margin-top: 1px;
+  }
+
+  .notes-textarea {
+    width: 100%; padding: 12px 16px;
+    border: none; outline: none; resize: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: var(--text);
+    background: transparent; line-height: 1.6;
+    min-height: 110px;
+  }
+
+  .notes-textarea::placeholder { color: #b8b0a4; font-style: italic; }
+
+  .notes-save-indicator {
+    padding: 4px 16px 10px;
+    font-size: 10px; color: var(--muted); font-style: italic;
+  }
+
+  .notes-full {
+    background: #fff; border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.07);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden; margin-bottom: 14px;
+  }
+
+  .notes-full-header {
+    padding: 14px 18px 12px;
+    border-bottom: 1px solid #f0ece4;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700; color: var(--ocean);
+  }
+
+  .notes-full textarea {
+    width: 100%; padding: 14px 18px;
+    border: none; outline: none; resize: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: var(--text);
+    background: transparent; line-height: 1.6;
+    min-height: 90px;
+  }
+
+  .notes-full textarea::placeholder { color: #b8b0a4; font-style: italic; }
 
 </style>
 </head>
@@ -591,6 +665,72 @@
     </div>
   </div>
 
+
+  <!-- ── NOTES SECTION ── -->
+  <div class="notes-section">
+    <div class="section-header" style="margin-bottom:16px">
+      <span class="section-emoji">📝</span>
+      <div class="section-title">Personal Notes</div>
+    </div>
+
+    <div class="notes-full">
+      <div class="notes-full-header">🌴 Group Notes</div>
+      <textarea id="note-group" placeholder="Anything for the whole group — reminders, ideas, questions..." oninput="saveNote('group', this.value)"></textarea>
+    </div>
+
+    <div class="notes-grid">
+
+      <div class="notes-card">
+        <div class="notes-card-header">
+          <div class="notes-card-icon" style="background:var(--blue-light)">👤</div>
+          <div>
+            <div class="notes-card-name">Jeremy</div>
+            <div class="notes-card-sub">Personal reminders & extras</div>
+          </div>
+        </div>
+        <textarea class="notes-textarea" id="note-jeremy" placeholder="Things to pack, reminders, don't forgets..." oninput="saveNote('jeremy', this.value)"></textarea>
+        <div class="notes-save-indicator" id="saved-jeremy"></div>
+      </div>
+
+      <div class="notes-card">
+        <div class="notes-card-header">
+          <div class="notes-card-icon" style="background:var(--orange-light)">👤</div>
+          <div>
+            <div class="notes-card-name">Keely</div>
+            <div class="notes-card-sub">Personal reminders & extras</div>
+          </div>
+        </div>
+        <textarea class="notes-textarea" id="note-keely" placeholder="Things to pack, reminders, don't forgets..." oninput="saveNote('keely', this.value)"></textarea>
+        <div class="notes-save-indicator" id="saved-keely"></div>
+      </div>
+
+      <div class="notes-card">
+        <div class="notes-card-header">
+          <div class="notes-card-icon" style="background:var(--purple-light)">👤</div>
+          <div>
+            <div class="notes-card-name">Cliff</div>
+            <div class="notes-card-sub">Personal reminders & extras</div>
+          </div>
+        </div>
+        <textarea class="notes-textarea" id="note-cliff" placeholder="Things to pack, reminders, don't forgets..." oninput="saveNote('cliff', this.value)"></textarea>
+        <div class="notes-save-indicator" id="saved-cliff"></div>
+      </div>
+
+      <div class="notes-card">
+        <div class="notes-card-header">
+          <div class="notes-card-icon" style="background:var(--green-light)">👤</div>
+          <div>
+            <div class="notes-card-name">Melissa</div>
+            <div class="notes-card-sub">Personal reminders & extras</div>
+          </div>
+        </div>
+        <textarea class="notes-textarea" id="note-melissa" placeholder="Things to pack, reminders, don't forgets..." oninput="saveNote('melissa', this.value)"></textarea>
+        <div class="notes-save-indicator" id="saved-melissa"></div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -675,6 +815,33 @@
       document.getElementById('pw-input').focus();
     }
   }
+
+  // ── NOTES ──
+  const NOTES_KEY = 'kw2026_notes';
+  const saveTimers = {};
+
+  function saveNote(person, value) {
+    const notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+    notes[person] = value;
+    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+    const ind = document.getElementById('saved-' + person);
+    if (ind) {
+      clearTimeout(saveTimers[person]);
+      ind.textContent = 'Saved ✓';
+      saveTimers[person] = setTimeout(() => { ind.textContent = ''; }, 1500);
+    }
+  }
+
+  function loadNotes() {
+    const notes = JSON.parse(localStorage.getItem(NOTES_KEY) || '{}');
+    ['group','jeremy','keely','cliff','melissa'].forEach(p => {
+      const el = document.getElementById('note-' + p);
+      if (el && notes[p]) el.value = notes[p];
+    });
+  }
+
+  loadNotes();
+
 </script>
 
 </body>

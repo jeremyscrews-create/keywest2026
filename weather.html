@@ -16,7 +16,7 @@
   }
   body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; }
 
-  #pw-overlay { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+  #pw-overlay { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; min-height: 100vh; min-width: 100vw; }
   #pw-overlay .pw-palm { font-size: 52px; }
   #pw-overlay h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 26px; font-weight: 900; }
   #pw-overlay p { color: rgba(255,255,255,0.7); font-size: 13px; }
@@ -143,6 +143,7 @@ function checkPw() {
     sessionStorage.setItem('kw2026_auth', '1');
     document.getElementById('pw-overlay').style.display = 'none';
     document.body.classList.remove('locked');
+    loadWeather();
   } else {
     document.getElementById('pw-error').textContent = 'Incorrect password — try again';
     document.getElementById('pw-input').value = '';
@@ -169,14 +170,24 @@ async function loadWeather() {
   const LAT = 24.5551, LON = -81.7800;
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weathercode,windspeed_10m,relativehumidity_2m,apparent_temperature&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York&forecast_days=14`;
 
+  document.getElementById('current-weather').innerHTML = '<div class="loading">Loading current conditions... ☀️</div>';
+  document.getElementById('trip-forecast').innerHTML = '<div class="loading">Loading trip forecast...</div>';
+  document.getElementById('forecast-grid').innerHTML = '<div class="loading">Loading...</div>';
+
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const d = await res.json();
+    if (!d.current || !d.daily) throw new Error('Bad data');
     renderCurrent(d.current);
     renderForecast(d.daily);
     renderTripForecast(d.daily);
   } catch(e) {
-    document.getElementById('current-weather').innerHTML = '<div class="info-box">⚠️ Could not load live weather. Check back closer to the trip, or visit <a href="https://forecast.weather.gov/MapClick.php?CityName=Key+West&state=FL" target="_blank">weather.gov</a> for Key West conditions.</div>';
+    document.getElementById('current-weather').innerHTML = `
+      <div class="info-box">⚠️ Could not load live weather (${e.message}).
+        <a href="#" onclick="loadWeather();return false;" style="font-weight:700;color:#1565a8">↺ Try again</a>
+        &nbsp;or visit <a href="https://forecast.weather.gov/MapClick.php?CityName=Key+West&state=FL" target="_blank" style="font-weight:700">weather.gov</a> for Key West conditions.
+      </div>`;
     document.getElementById('trip-forecast').innerHTML = '';
     document.getElementById('forecast-grid').innerHTML = '';
     renderTripStatic();
