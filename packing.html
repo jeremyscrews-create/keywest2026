@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧳 Packing List · Key West 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #e07820;
+    --orange-light: #fff0e0;
+    --green: #2a9d5c;
+    --green-light: #e6f7ee;
+    --blue: #1565a8;
+    --blue-light: #e8f0fa;
+    --purple: #9b5de5;
+    --purple-light: #f3ecfd;
+    --ocean: #0a3d6b;
+    --sand: #fdf6e9;
+    --text: #1a1a2e;
+    --muted: #7a7a99;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sand);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(160deg, var(--ocean) 0%, #1565a8 55%, #c97a2a 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3C/g%3E%3C/svg%3E") repeat;
+    pointer-events: none;
+  }
+
+  .hero-palm { font-size: 52px; display: block; margin-bottom: 12px; }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 46px);
+    color: #fff;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+
+  .hero-sub {
+    font-size: 13px;
+    color: #ffd98a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    font-weight: 500;
+  }
+
+  .hero-progress {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-bar-wrap {
+    width: 260px;
+    height: 8px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: #ffd98a;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+
+  .main { max-width: 900px; margin: 0 auto; padding: 36px 20px 60px; }
+
+  .reset-btn {
+    display: block;
+    margin: 0 auto 32px;
+    padding: 8px 22px;
+    border-radius: 20px;
+    border: 1.5px solid #d0c8ba;
+    background: #fff;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 2px solid #e8e0d0;
+  }
+
+  .section-emoji { font-size: 24px; }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px; font-weight: 700; color: var(--ocean);
+    flex: 1;
+  }
+
+  .section-count {
+    font-size: 11px; font-weight: 600; color: var(--muted);
+    background: #f0ece4; padding: 3px 9px; border-radius: 20px;
+  }
+
+  .items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 8px;
+  }
+
+  .item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1.5px solid rgba(0,0,0,0.06);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .item:hover { border-color: #c8c0b4; background: #fdfaf5; }
+
+  .item.checked {
+    background: var(--green-light);
+    border-color: #a8dfc0;
+  }
+
+  .item-check {
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    border: 2px solid #c8c0b4;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    transition: all 0.15s;
+    background: #fff;
+  }
+
+  .item.checked .item-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+
+  .item-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+
+  .item.checked .item-text {
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  .item-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .must-tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 1px 6px; border-radius: 10px;
+    background: var(--orange-light); color: var(--orange);
+    margin-left: 6px; vertical-align: middle;
+  }
+
+  @media (max-width: 600px) {
+    .items-grid { grid-template-columns: 1fr; }
+    .hero { padding: 32px 16px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-palm">🧳</span>
+  <h1>Packing List</h1>
+  <p class="hero-sub">Key West · March 19–22, 2026</p>
+  <div class="hero-progress">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">0 of 0 packed</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <button class="reset-btn" onclick="resetAll()">↺ Reset all</button>
+
+  <!-- ESSENTIALS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">🔑</span>
+      <div class="section-title">Essentials</div>
+      <span class="section-count" id="count-essentials">0/0</span>
+    </div>
+    <div class="items-grid" data-section="essentials">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">ID / Passport <span class="must-tag">must</span></div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Flight confirmations <span class="must-tag">must</span></div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Hotel confirmation <span class="must-tag">must</span></div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Credit cards & cash</div><div class="item-note">Small bills for Mallory Square buskers</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Phone & charger</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Portable battery pack</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Earbuds / headphones</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOTHING -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">👗</span>
+      <div class="section-title">Clothing</div>
+      <span class="section-count" id="count-clothing">0/0</span>
+    </div>
+    <div class="items-grid" data-section="clothing">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Dressy outfit <span class="must-tag">must</span></div><div class="item-note">Lolita's on Friday — Formal Night</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Casual-nice outfit</div><div class="item-note">Louie's Backyard on Thursday</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Boat shoes <span class="must-tag">must</span></div><div class="item-note">Required for Saturday cruise</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Swimsuits (2+)</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Cover-up / beach wrap</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Shorts & casual tops</div><div class="item-note">3–4 days worth</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Light layer / cardigan</div><div class="item-note">Restaurants can be cold</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Sandals / flip flops</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Walking shoes / sneakers</div><div class="item-note">For Duval Street crawl</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Sun hat or baseball cap</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Sunglasses</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Underwear & socks</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Pajamas / sleepwear</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEACH & SUN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">☀️</span>
+      <div class="section-title">Beach & Sun</div>
+      <span class="section-count" id="count-beach">0/0</span>
+    </div>
+    <div class="items-grid" data-section="beach">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Sunscreen SPF 50+ <span class="must-tag">must</span></div><div class="item-note">Reef-safe for snorkeling at Fort Zach</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">After-sun lotion / aloe</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Beach bag / tote</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Beach towel</div><div class="item-note">Hotel provides pool towels</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Waterproof phone pouch</div><div class="item-note">Great for the sunset cruise</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Snorkel gear</div><div class="item-note">Or rent at Fort Zachary Taylor</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Reusable water bottle</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOILETRIES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">🪥</span>
+      <div class="section-title">Toiletries</div>
+      <span class="section-count" id="count-toiletries">0/0</span>
+    </div>
+    <div class="items-grid" data-section="toiletries">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Toothbrush & toothpaste</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Shampoo & conditioner</div><div class="item-note">Hotel provides basics</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Deodorant</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Razor</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Makeup / skincare</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Hair styling products</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Lip balm with SPF</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Insect repellent</div><div class="item-note">Evenings near the water</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEALTH & MEDS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">💊</span>
+      <div class="section-title">Health & Meds</div>
+      <span class="section-count" id="count-health">0/0</span>
+    </div>
+    <div class="items-grid" data-section="health">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Prescription medications</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Pain reliever / Advil</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Antacids / Pepto</div><div class="item-note">You'll be eating a lot of seafood 🦞</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Motion sickness tabs</div><div class="item-note">For the Saturday sunset cruise</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Band-aids / first aid</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Electrolyte packets</div><div class="item-note">Hot sun + drinks = stay hydrated</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NICE TO HAVE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">⭐</span>
+      <div class="section-title">Nice to Have</div>
+      <span class="section-count" id="count-nicetohave">0/0</span>
+    </div>
+    <div class="items-grid" data-section="nicetohave">
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Small crossbody bag</div><div class="item-note">For the Duval Street crawl</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Camera / GoPro</div><div class="item-note">Sunset cruise & Fort Zach</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Book or e-reader</div><div class="item-note">Beach reading at Smathers</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Packable rain jacket</div><div class="item-note">March can have quick showers</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Travel umbrella</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Card game / travel game</div><div class="item-note">For the pool or downtime</div></div>
+      </div>
+      <div class="item" onclick="toggle(this)">
+        <div class="item-check"></div>
+        <div><div class="item-text">Dry bag</div><div class="item-note">Keep things dry on the cruise</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(el) {
+    el.classList.toggle('checked');
+    const check = el.querySelector('.item-check');
+    check.textContent = el.classList.contains('checked') ? '✓' : '';
+    updateProgress();
+    updateSectionCounts();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.item');
+    const checked = document.querySelectorAll('.item.checked');
+    const pct = all.length ? (checked.length / all.length) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `${checked.length} of ${all.length} packed`;
+  }
+
+  function updateSectionCounts() {
+    document.querySelectorAll('[data-section]').forEach(grid => {
+      const id = grid.dataset.section;
+      const total = grid.querySelectorAll('.item').length;
+      const done = grid.querySelectorAll('.item.checked').length;
+      const el = document.getElementById('count-' + id);
+      if (el) {
+        el.textContent = `${done}/${total}`;
+        el.style.background = done === total && total > 0 ? 'var(--green-light)' : '#f0ece4';
+        el.style.color = done === total && total > 0 ? 'var(--green)' : 'var(--muted)';
+      }
+    });
+  }
+
+  function resetAll() {
+    document.querySelectorAll('.item').forEach(el => {
+      el.classList.remove('checked');
+      el.querySelector('.item-check').textContent = '';
+    });
+    updateProgress();
+    updateSectionCounts();
+  }
+
+  // Initialize counts
+  updateProgress();
+  updateSectionCounts();
+</script>
+
+</body>
+</html>
