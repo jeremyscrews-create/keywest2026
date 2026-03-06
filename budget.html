@@ -11,6 +11,7 @@
     --orange: #e07820; --orange-light: #fff0e0;
     --green: #2a9d5c; --green-light: #e6f7ee;
     --blue: #1565a8; --blue-light: #e8f0fa;
+    --purple: #9b5de5; --purple-light: #f3ecfd;
     --red: #d63031; --red-light: #ffeaea;
     --ocean: #0a3d6b; --sand: #fdf6e9;
     --text: #1a1a2e; --muted: #7a7a99;
@@ -40,63 +41,98 @@
   .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 5vw, 44px); color: #fff; font-weight: 900; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
   .hero-sub { font-size: 13px; color: #ffd98a; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; font-weight: 500; }
 
-  .main { max-width: 800px; margin: 0 auto; padding: 32px 20px 60px; }
+  .main { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
 
-  /* SUMMARY CARDS */
-  .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
-  .summary-card { background: #fff; border-radius: 14px; padding: 18px 16px; text-align: center; border: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-  .summary-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
-  .summary-value { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
-  .summary-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .party-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+  .party-card { border-radius: 16px; padding: 20px 18px; border: 1px solid; }
+  .party-card.jeremy { background: var(--blue-light); border-color: #b8d0ee; }
+  .party-card.cliff  { background: var(--purple-light); border-color: #d4b8f8; }
+  .party-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+  .party-card.jeremy .party-name { color: var(--blue); }
+  .party-card.cliff  .party-name { color: var(--purple); }
+  .party-members { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+  .party-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .party-stat { background: rgba(255,255,255,0.7); border-radius: 10px; padding: 10px 12px; }
+  .party-stat-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; }
+  .party-stat-value { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; margin-top: 2px; }
+  .party-card.jeremy .party-stat-value { color: var(--blue); }
+  .party-card.cliff  .party-stat-value { color: var(--purple); }
+  .party-stat-sub { font-size: 10px; color: var(--muted); margin-top: 1px; }
 
-  /* SETTLE UP */
-  .settle-card { border-radius: 14px; padding: 18px 20px; margin-bottom: 28px; border: 1px solid; }
+  .settle-card { border-radius: 14px; padding: 18px 22px; margin-bottom: 24px; border: 2px solid; }
   .settle-card.balanced { background: var(--green-light); border-color: #a8dfc0; }
   .settle-card.owes { background: var(--orange-light); border-color: #f5c89a; }
-  .settle-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
-  .settle-detail { font-size: 13px; line-height: 1.6; }
+  .settle-card.empty { background: #f5f5f5; border-color: #ddd; }
+  .settle-title { font-weight: 700; font-size: 16px; margin-bottom: 5px; }
+  .settle-big { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 6px; }
+  .settle-detail { font-size: 13px; line-height: 1.7; color: #444; }
 
-  /* ADD EXPENSE */
-  .add-card { background: #fff; border-radius: 16px; padding: 22px; border: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 28px; }
-  .add-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--ocean); margin-bottom: 16px; }
+  .tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #e8e0d0; }
+  .tab { padding: 10px 16px; border-radius: 10px 10px 0 0; font-size: 13px; font-weight: 700; cursor: pointer; border: none; background: none; color: var(--muted); transition: all 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; font-family: 'DM Sans', sans-serif; }
+  .tab.active { color: var(--ocean); border-bottom-color: var(--ocean); background: rgba(10,61,107,0.05); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .form-card { background: #fff; border-radius: 16px; padding: 22px; border: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .form-card-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--ocean); margin-bottom: 16px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .form-row.single { grid-template-columns: 1fr; }
   .form-group { display: flex; flex-direction: column; gap: 5px; }
   .form-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; }
-  .form-input, .form-select {
-    padding: 10px 14px; border-radius: 8px; border: 1.5px solid #d0c8ba;
-    font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text);
-    background: #fdfaf5; outline: none; transition: border 0.15s;
-  }
+  .form-input, .form-select { padding: 10px 14px; border-radius: 8px; border: 1.5px solid #d0c8ba; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text); background: #fdfaf5; outline: none; transition: border 0.15s; width: 100%; }
   .form-input:focus, .form-select:focus { border-color: var(--orange); }
-  .add-btn {
-    width: 100%; padding: 12px; border-radius: 10px; border: none;
-    background: var(--orange); color: #fff; font-size: 15px; font-weight: 700;
-    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; margin-top: 4px;
-  }
-  .add-btn:hover { background: #c96a10; }
+  .submit-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; margin-top: 4px; color: #fff; }
+  .submit-btn.orange { background: var(--orange); }
+  .submit-btn.orange:hover { background: #c96a10; }
+  .submit-btn.green { background: var(--green); }
+  .submit-btn.green:hover { background: #1e7a45; }
 
-  /* EXPENSE LIST */
-  .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #e8e0d0; }
-  .list-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ocean); }
-  .clear-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #d0c8ba; background: #fff; color: var(--muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--ocean); }
+  .clear-btn { padding: 5px 12px; border-radius: 20px; border: 1.5px solid #d0c8ba; background: #fff; color: var(--muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
   .clear-btn:hover { border-color: var(--red); color: var(--red); }
 
-  .expense-item { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 6px rgba(0,0,0,0.04); margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
-  .expense-icon { font-size: 24px; flex-shrink: 0; }
-  .expense-info { flex: 1; }
-  .expense-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .expense-item { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 6px rgba(0,0,0,0.04); margin-bottom: 10px; }
+  .expense-main { display: flex; align-items: center; gap: 12px; }
+  .expense-icon { font-size: 22px; flex-shrink: 0; }
+  .expense-info { flex: 1; min-width: 0; }
+  .expense-name { font-weight: 600; font-size: 14px; }
   .expense-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .expense-amount { text-align: right; flex-shrink: 0; }
-  .expense-total { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text); }
-  .expense-each { font-size: 11px; color: var(--muted); }
-  .expense-delete { background: none; border: none; cursor: pointer; font-size: 16px; color: #ccc; padding: 4px; transition: color 0.15s; flex-shrink: 0; }
+  .expense-right { text-align: right; flex-shrink: 0; }
+  .expense-total { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+  .expense-delete { background: none; border: none; cursor: pointer; font-size: 14px; color: #ccc; padding: 4px; transition: color 0.15s; flex-shrink: 0; }
   .expense-delete:hover { color: var(--red); }
 
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
-  .empty-state .empty-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+  .payment-row { margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0ece4; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .payment-pill { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; }
+  .payment-pill.jeremy { background: var(--blue-light); color: var(--blue); }
+  .payment-pill.cliff  { background: var(--purple-light); color: var(--purple); }
+  .pill-delete { cursor: pointer; opacity: 0.5; font-size: 10px; line-height: 1; }
+  .pill-delete:hover { opacity: 1; }
+  .add-payment-btn { font-size: 11px; font-weight: 600; color: var(--green); background: var(--green-light); border: none; border-radius: 20px; padding: 3px 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 
-  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } .summary-grid { grid-template-columns: repeat(2, 1fr); } .main { padding: 24px 14px 50px; } }
+  .balance-pill { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-top: 3px; }
+  .balance-pill.paid    { background: var(--green-light); color: var(--green); }
+  .balance-pill.partial { background: var(--orange-light); color: var(--orange); }
+  .balance-pill.unpaid  { background: var(--red-light); color: var(--red); }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 16px; padding: 24px; width: 100%; max-width: 360px; box-shadow: 0 8px 40px rgba(0,0,0,0.2); }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--ocean); margin-bottom: 14px; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 14px; }
+  .modal-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .modal-btn.confirm { background: var(--green); color: #fff; }
+  .modal-btn.cancel  { background: #f0ece4; color: var(--muted); }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
+  .empty-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+
+  @media (max-width: 560px) {
+    .party-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .main { padding: 24px 14px 50px; }
+    .tab { font-size: 11px; padding: 8px 10px; }
+  }
 </style>
 </head>
 <body>
@@ -110,6 +146,32 @@
     <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
   </div>
   <div id="pw-error"></div>
+</div>
+
+<div class="modal-overlay" id="payment-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">💸 Log a Payment</div>
+    <input type="hidden" id="modal-expense-id">
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Who is paying?</label>
+      <select class="form-select" id="modal-payer">
+        <option value="Jeremy">Jeremy</option>
+        <option value="Cliff">Cliff</option>
+      </select>
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Amount ($)</label>
+      <input class="form-input" id="modal-amount" type="number" placeholder="0.00" min="0.01" step="0.01">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Note (optional)</label>
+      <input class="form-input" id="modal-note" type="text" placeholder="e.g. Venmo, cash, partial">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-btn confirm" onclick="submitPayment()">Log Payment</button>
+    </div>
+  </div>
 </div>
 
 <div class="site-nav">
@@ -127,88 +189,143 @@
 <div class="hero">
   <span class="hero-palm">💰</span>
   <h1>Trip Budget</h1>
-  <p class="hero-sub">Split 2 Ways · Keely & Jeremy</p>
+  <p class="hero-sub">Jeremy + Keely &nbsp;·&nbsp; Cliff + Melissa</p>
 </div>
 
 <div class="main">
 
-  <div class="summary-grid" id="summary-grid">
-    <div class="summary-card">
-      <div class="summary-label">Total Spent</div>
-      <div class="summary-value" id="s-total" style="color:var(--ocean)">$0</div>
-      <div class="summary-sub">all expenses</div>
+  <div class="party-grid">
+    <div class="party-card jeremy">
+      <div class="party-name">Jeremy's Party</div>
+      <div class="party-members">👤 Jeremy + Keely</div>
+      <div class="party-stats">
+        <div class="party-stat">
+          <div class="party-stat-label">Fair Share</div>
+          <div class="party-stat-value" id="j-share">$0</div>
+          <div class="party-stat-sub">half of total</div>
+        </div>
+        <div class="party-stat">
+          <div class="party-stat-label">Paid So Far</div>
+          <div class="party-stat-value" id="j-paid">$0</div>
+          <div class="party-stat-sub">logged payments</div>
+        </div>
+      </div>
     </div>
-    <div class="summary-card">
-      <div class="summary-label">Keely Paid</div>
-      <div class="summary-value" id="s-keely" style="color:var(--purple)">$0</div>
-      <div class="summary-sub">of total</div>
-    </div>
-    <div class="summary-card">
-      <div class="summary-label">Jeremy Paid</div>
-      <div class="summary-value" id="s-jeremy" style="color:var(--blue)">$0</div>
-      <div class="summary-sub">of total</div>
-    </div>
-    <div class="summary-card">
-      <div class="summary-label">Each Owes</div>
-      <div class="summary-value" id="s-each" style="color:var(--orange)">$0</div>
-      <div class="summary-sub">fair share</div>
+    <div class="party-card cliff">
+      <div class="party-name">Cliff's Party</div>
+      <div class="party-members">👤 Cliff + Melissa</div>
+      <div class="party-stats">
+        <div class="party-stat">
+          <div class="party-stat-label">Fair Share</div>
+          <div class="party-stat-value" id="c-share">$0</div>
+          <div class="party-stat-sub">half of total</div>
+        </div>
+        <div class="party-stat">
+          <div class="party-stat-label">Paid So Far</div>
+          <div class="party-stat-value" id="c-paid">$0</div>
+          <div class="party-stat-sub">logged payments</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div id="settle-section"></div>
 
-  <!-- ADD EXPENSE -->
-  <div class="add-card">
-    <div class="add-title">➕ Add Expense</div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Description</label>
-        <input class="form-input" id="f-desc" type="text" placeholder="e.g. Louie's Backyard dinner">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Amount ($)</label>
-        <input class="form-input" id="f-amount" type="number" placeholder="0.00" min="0" step="0.01">
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Paid By</label>
-        <select class="form-select" id="f-payer">
-          <option value="Keely">Keely</option>
-          <option value="Jeremy">Jeremy</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Category</label>
-        <select class="form-select" id="f-cat">
-          <option value="🍽️ Dining">🍽️ Dining</option>
-          <option value="🏨 Hotel">🏨 Hotel</option>
-          <option value="⛵ Activities">⛵ Activities</option>
-          <option value="🛵 Transport">🛵 Transport</option>
-          <option value="🍹 Drinks">🍹 Drinks</option>
-          <option value="🛍️ Shopping">🛍️ Shopping</option>
-          <option value="✈️ Flights">✈️ Flights</option>
-          <option value="💊 Other">💊 Other</option>
-        </select>
-      </div>
-    </div>
-    <button class="add-btn" onclick="addExpense()">Add Expense</button>
+  <div class="tabs">
+    <button class="tab active" id="tab-btn-expenses"  onclick="switchTab('expenses')">📋 Expenses</button>
+    <button class="tab"        id="tab-btn-add"        onclick="switchTab('add')">➕ Add Expense</button>
+    <button class="tab"        id="tab-btn-payment"    onclick="switchTab('payment')">💸 Log Payment</button>
   </div>
 
-  <!-- LIST -->
-  <div class="list-header">
-    <div class="list-title">All Expenses</div>
-    <button class="clear-btn" onclick="clearAll()">Clear All</button>
+  <!-- EXPENSES TAB -->
+  <div class="tab-panel active" id="tab-expenses">
+    <div class="section-header">
+      <div class="section-title">All Expenses</div>
+      <button class="clear-btn" onclick="clearAll()">Clear All</button>
+    </div>
+    <div id="expense-list"></div>
   </div>
-  <div id="expense-list"></div>
+
+  <!-- ADD TAB -->
+  <div class="tab-panel" id="tab-add">
+    <div class="form-card">
+      <div class="form-card-title">➕ Add a Shared Expense</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input class="form-input" id="f-desc" type="text" placeholder="e.g. Flights, Louie's dinner">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Amount ($)</label>
+          <input class="form-input" id="f-amount" type="number" placeholder="0.00" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="f-cat">
+            <option value="✈️ Flights">✈️ Flights</option>
+            <option value="🏨 Hotel">🏨 Hotel</option>
+            <option value="🍽️ Dining">🍽️ Dining</option>
+            <option value="⛵ Activities">⛵ Activities</option>
+            <option value="🛵 Transport">🛵 Transport</option>
+            <option value="🍹 Drinks">🍹 Drinks</option>
+            <option value="🛍️ Shopping">🛍️ Shopping</option>
+            <option value="💊 Other">💊 Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Who paid upfront? (optional)</label>
+          <select class="form-select" id="f-payer">
+            <option value="">Nobody yet — log later</option>
+            <option value="Jeremy">Jeremy paid in full</option>
+            <option value="Cliff">Cliff paid in full</option>
+          </select>
+        </div>
+      </div>
+      <button class="submit-btn orange" onclick="addExpense()">Add Expense</button>
+    </div>
+  </div>
+
+  <!-- PAYMENT TAB -->
+  <div class="tab-panel" id="tab-payment">
+    <div class="form-card">
+      <div class="form-card-title">💸 Log a Payment</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6">Record a full or partial payment toward any expense. Each expense tracks its own running balance.</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Expense</label>
+          <select class="form-select" id="fp-expense"><option value="">— Select —</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Who is paying?</label>
+          <select class="form-select" id="fp-payer">
+            <option value="Jeremy">Jeremy</option>
+            <option value="Cliff">Cliff</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Amount ($)</label>
+          <input class="form-input" id="fp-amount" type="number" placeholder="0.00" min="0.01" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note (optional)</label>
+          <input class="form-input" id="fp-note" type="text" placeholder="e.g. Venmo, partial, cash">
+        </div>
+      </div>
+      <button class="submit-btn green" onclick="addPaymentFromTab()">Log Payment</button>
+    </div>
+  </div>
 
 </div>
 
 <script>
 (function() {
   const overlay = document.getElementById('pw-overlay');
-  if (sessionStorage.getItem('kw2026_auth') === '1') { overlay.style.display = 'none'; }
-  else { document.body.classList.add('locked'); }
+  if (sessionStorage.getItem('kw2026_auth') === '1') overlay.style.display = 'none';
+  else document.body.classList.add('locked');
 })();
 function checkPw() {
   if (document.getElementById('pw-input').value === 'ConchyKong') {
@@ -221,94 +338,182 @@ function checkPw() {
   }
 }
 
-const STORAGE_KEY = 'kw2026_budget';
-
-function load() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+function switchTab(id) {
+  ['expenses','add','payment'].forEach(t => {
+    document.getElementById('tab-' + t).classList.remove('active');
+    document.getElementById('tab-btn-' + t).classList.remove('active');
+  });
+  document.getElementById('tab-' + id).classList.add('active');
+  document.getElementById('tab-btn-' + id).classList.add('active');
+  if (id === 'payment') populatePaymentSelect();
 }
-function save(expenses) { localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses)); }
-function fmt(n) { return '$' + n.toFixed(2); }
+
+const EXP_KEY = 'kw2026_exp3';
+const PAY_KEY = 'kw2026_pay3';
+function loadExp() { try { return JSON.parse(localStorage.getItem(EXP_KEY)) || []; } catch { return []; } }
+function saveExp(d) { localStorage.setItem(EXP_KEY, JSON.stringify(d)); }
+function loadPay() { try { return JSON.parse(localStorage.getItem(PAY_KEY)) || []; } catch { return []; } }
+function savePay(d) { localStorage.setItem(PAY_KEY, JSON.stringify(d)); }
+function fmt(n) { return '$' + Math.abs(n).toFixed(2); }
+function today() { return new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}); }
 
 function addExpense() {
-  const desc = document.getElementById('f-desc').value.trim();
+  const desc   = document.getElementById('f-desc').value.trim();
   const amount = parseFloat(document.getElementById('f-amount').value);
-  const payer = document.getElementById('f-payer').value;
-  const cat = document.getElementById('f-cat').value;
-
-  if (!desc) { alert('Please enter a description'); return; }
-  if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
-
-  const expenses = load();
-  expenses.push({ id: Date.now(), desc, amount, payer, cat, date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}) });
-  save(expenses);
-
+  const cat    = document.getElementById('f-cat').value;
+  const payer  = document.getElementById('f-payer').value;
+  if (!desc)            { alert('Enter a description'); return; }
+  if (!amount || amount <= 0) { alert('Enter a valid amount'); return; }
+  const expenses = loadExp();
+  const id = Date.now();
+  expenses.push({ id, desc, amount, cat, date: today() });
+  saveExp(expenses);
+  if (payer) {
+    const pays = loadPay();
+    pays.push({ id: id + 1, expenseId: id, payer, amount, note: 'Paid upfront', date: today() });
+    savePay(pays);
+  }
   document.getElementById('f-desc').value = '';
   document.getElementById('f-amount').value = '';
+  document.getElementById('f-payer').value = '';
   render();
+  switchTab('expenses');
 }
 
 function deleteExpense(id) {
-  const expenses = load().filter(e => e.id !== id);
-  save(expenses);
+  if (!confirm('Delete this expense and its payments?')) return;
+  saveExp(loadExp().filter(e => e.id !== id));
+  savePay(loadPay().filter(p => p.expenseId !== id));
+  render();
+}
+
+function openModal(expenseId, expenseName) {
+  document.getElementById('modal-expense-id').value = expenseId;
+  document.getElementById('modal-title').textContent = '💸 Payment — ' + expenseName;
+  document.getElementById('modal-amount').value = '';
+  document.getElementById('modal-note').value = '';
+  document.getElementById('payment-modal').classList.add('open');
+}
+function closeModal() { document.getElementById('payment-modal').classList.remove('open'); }
+function submitPayment() {
+  const expenseId = parseInt(document.getElementById('modal-expense-id').value);
+  const payer  = document.getElementById('modal-payer').value;
+  const amount = parseFloat(document.getElementById('modal-amount').value);
+  const note   = document.getElementById('modal-note').value.trim();
+  if (!amount || amount <= 0) { alert('Enter a valid amount'); return; }
+  logPayment(expenseId, payer, amount, note);
+  closeModal();
+}
+
+function populatePaymentSelect() {
+  const expenses = loadExp();
+  const pays = loadPay();
+  const sel = document.getElementById('fp-expense');
+  sel.innerHTML = '<option value="">— Select expense —</option>';
+  expenses.forEach(e => {
+    const paid = pays.filter(p => p.expenseId === e.id).reduce((s, p) => s + p.amount, 0);
+    const bal = e.amount - paid;
+    sel.innerHTML += `<option value="${e.id}">${e.desc} · ${fmt(bal)} remaining</option>`;
+  });
+}
+function addPaymentFromTab() {
+  const expenseId = parseInt(document.getElementById('fp-expense').value);
+  const payer  = document.getElementById('fp-payer').value;
+  const amount = parseFloat(document.getElementById('fp-amount').value);
+  const note   = document.getElementById('fp-note').value.trim();
+  if (!expenseId) { alert('Select an expense'); return; }
+  if (!amount || amount <= 0) { alert('Enter a valid amount'); return; }
+  logPayment(expenseId, payer, amount, note);
+  document.getElementById('fp-amount').value = '';
+  document.getElementById('fp-note').value = '';
+  switchTab('expenses');
+}
+
+function logPayment(expenseId, payer, amount, note) {
+  const pays = loadPay();
+  pays.push({ id: Date.now(), expenseId, payer, amount, note, date: today() });
+  savePay(pays);
+  render();
+}
+
+function deletePayment(id) {
+  savePay(loadPay().filter(p => p.id !== id));
   render();
 }
 
 function clearAll() {
-  if (confirm('Clear all expenses? This cannot be undone.')) {
-    save([]);
+  if (confirm('Clear all expenses and payments? Cannot be undone.')) {
+    localStorage.removeItem(EXP_KEY);
+    localStorage.removeItem(PAY_KEY);
     render();
   }
 }
 
 function render() {
-  const expenses = load();
+  const expenses = loadExp();
+  const pays = loadPay();
+
   const total = expenses.reduce((s, e) => s + e.amount, 0);
-  const keelyPaid = expenses.filter(e => e.payer === 'Keely').reduce((s, e) => s + e.amount, 0);
-  const jeremyPaid = expenses.filter(e => e.payer === 'Jeremy').reduce((s, e) => s + e.amount, 0);
   const fairShare = total / 2;
-  const keelyOwes = fairShare - keelyPaid; // positive = Keely owes Jeremy
+  const jeremyPaid = pays.filter(p => p.payer === 'Jeremy').reduce((s, p) => s + p.amount, 0);
+  const cliffPaid  = pays.filter(p => p.payer === 'Cliff').reduce((s, p) => s + p.amount, 0);
 
-  document.getElementById('s-total').textContent = fmt(total);
-  document.getElementById('s-keely').textContent = fmt(keelyPaid);
-  document.getElementById('s-jeremy').textContent = fmt(jeremyPaid);
-  document.getElementById('s-each').textContent = fmt(fairShare);
+  document.getElementById('j-share').textContent = fmt(fairShare);
+  document.getElementById('j-paid').textContent  = fmt(jeremyPaid);
+  document.getElementById('c-share').textContent = fmt(fairShare);
+  document.getElementById('c-paid').textContent  = fmt(cliffPaid);
 
-  // Settle up
-  let settleHtml = '';
+  const cliffOwes = fairShare - cliffPaid;
+  let settleHtml;
   if (total === 0) {
-    settleHtml = `<div class="settle-card balanced"><div class="settle-title">💸 No expenses yet</div><div class="settle-detail">Start adding expenses below to track who owes what.</div></div>`;
-  } else if (Math.abs(keelyOwes) < 0.01) {
-    settleHtml = `<div class="settle-card balanced"><div class="settle-title">✅ All settled up!</div><div class="settle-detail">Keely and Jeremy have each paid their fair share of ${fmt(fairShare)}.</div></div>`;
-  } else if (keelyOwes > 0) {
-    settleHtml = `<div class="settle-card owes"><div class="settle-title">💸 Settlement Needed</div><div class="settle-detail">Keely owes Jeremy <strong>${fmt(Math.abs(keelyOwes))}</strong><br>Jeremy paid ${fmt(jeremyPaid)} · Keely paid ${fmt(keelyPaid)} · Fair share is ${fmt(fairShare)} each.</div></div>`;
+    settleHtml = `<div class="settle-card empty"><div class="settle-title">💸 No expenses yet</div><div class="settle-detail">Add expenses in the ➕ tab, then log payments in the 💸 tab as Cliff pays you back.</div></div>`;
+  } else if (Math.abs(cliffOwes) < 0.01) {
+    settleHtml = `<div class="settle-card balanced"><div class="settle-title">✅ All settled up!</div><div class="settle-detail">Both parties have paid their fair share of <strong>${fmt(fairShare)}</strong>. Total trip: <strong>${fmt(total)}</strong>.</div></div>`;
+  } else if (cliffOwes > 0) {
+    settleHtml = `<div class="settle-card owes"><div class="settle-title">💸 Cliff owes Jeremy</div><div class="settle-big">${fmt(cliffOwes)}</div><div class="settle-detail">Fair share: ${fmt(fairShare)} each &nbsp;·&nbsp; Cliff paid: ${fmt(cliffPaid)} &nbsp;·&nbsp; Jeremy paid: ${fmt(jeremyPaid)}</div></div>`;
   } else {
-    settleHtml = `<div class="settle-card owes"><div class="settle-title">💸 Settlement Needed</div><div class="settle-detail">Jeremy owes Keely <strong>${fmt(Math.abs(keelyOwes))}</strong><br>Keely paid ${fmt(keelyPaid)} · Jeremy paid ${fmt(jeremyPaid)} · Fair share is ${fmt(fairShare)} each.</div></div>`;
+    settleHtml = `<div class="settle-card owes"><div class="settle-title">💸 Jeremy owes Cliff</div><div class="settle-big">${fmt(Math.abs(cliffOwes))}</div><div class="settle-detail">Fair share: ${fmt(fairShare)} each &nbsp;·&nbsp; Jeremy paid: ${fmt(jeremyPaid)} &nbsp;·&nbsp; Cliff paid: ${fmt(cliffPaid)}</div></div>`;
   }
   document.getElementById('settle-section').innerHTML = settleHtml;
 
-  // Expense list
   const listEl = document.getElementById('expense-list');
   if (expenses.length === 0) {
-    listEl.innerHTML = `<div class="empty-state"><span class="empty-icon">🧾</span>No expenses yet — add your first one above!</div>`;
+    listEl.innerHTML = `<div class="empty-state"><span class="empty-icon">🧾</span>No expenses yet — tap ➕ Add Expense above!</div>`;
     return;
   }
 
-  // Show newest first
-  const sorted = [...expenses].reverse();
-  listEl.innerHTML = sorted.map(e => {
+  listEl.innerHTML = [...expenses].reverse().map(e => {
+    const expPays = pays.filter(p => p.expenseId === e.id);
+    const paid = expPays.reduce((s, p) => s + p.amount, 0);
+    const balance = e.amount - paid;
     const icon = e.cat.split(' ')[0];
-    const each = e.amount / 2;
+    let bClass = 'unpaid', bLabel = `${fmt(balance)} unpaid`;
+    if (balance <= 0.01) { bClass = 'paid'; bLabel = '✓ Fully paid'; }
+    else if (paid > 0)   { bClass = 'partial'; bLabel = `${fmt(balance)} remaining`; }
+
+    const pillsHtml = expPays.map(p => `
+      <span class="payment-pill ${p.payer.toLowerCase()}">
+        ${p.payer}: ${fmt(p.amount)}${p.note ? ' · ' + p.note : ''} · ${p.date}
+        <span class="pill-delete" onclick="deletePayment(${p.id})">✕</span>
+      </span>`).join('');
+
     return `<div class="expense-item">
-      <div class="expense-icon">${icon}</div>
-      <div class="expense-info">
-        <div class="expense-name">${e.desc}</div>
-        <div class="expense-meta">${e.cat} · Paid by ${e.payer} · ${e.date}</div>
+      <div class="expense-main">
+        <div class="expense-icon">${icon}</div>
+        <div class="expense-info">
+          <div class="expense-name">${e.desc}</div>
+          <div class="expense-meta">${e.cat} · Added ${e.date} · ${fmt(e.amount / 2)} each</div>
+        </div>
+        <div class="expense-right">
+          <div class="expense-total">${fmt(e.amount)}</div>
+          <span class="balance-pill ${bClass}">${bLabel}</span>
+        </div>
+        <button class="expense-delete" onclick="deleteExpense(${e.id})" title="Delete expense">✕</button>
       </div>
-      <div class="expense-amount">
-        <div class="expense-total">${fmt(e.amount)}</div>
-        <div class="expense-each">${fmt(each)} each</div>
+      <div class="payment-row">
+        ${pillsHtml}
+        <button class="add-payment-btn" onclick="openModal(${e.id}, '${e.desc.replace(/'/g,"\\'")}')">+ Log payment</button>
       </div>
-      <button class="expense-delete" onclick="deleteExpense(${e.id})" title="Delete">✕</button>
     </div>`;
   }).join('');
 }
