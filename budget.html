@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💰 Budget · Key West 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #e07820; --orange-light: #fff0e0;
+    --green: #2a9d5c; --green-light: #e6f7ee;
+    --blue: #1565a8; --blue-light: #e8f0fa;
+    --red: #d63031; --red-light: #ffeaea;
+    --ocean: #0a3d6b; --sand: #fdf6e9;
+    --text: #1a1a2e; --muted: #7a7a99;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; }
+
+  #pw-overlay { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+  #pw-overlay .pw-palm { font-size: 52px; }
+  #pw-overlay h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 26px; font-weight: 900; }
+  #pw-overlay p { color: rgba(255,255,255,0.7); font-size: 13px; }
+  #pw-box { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  #pw-input { padding: 12px 18px; border-radius: 10px; border: none; font-size: 15px; outline: none; width: 200px; text-align: center; letter-spacing: 2px; }
+  #pw-btn { padding: 12px 22px; border-radius: 10px; border: none; background: #e07820; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+  #pw-error { color: #ffd98a; font-size: 13px; min-height: 18px; }
+  body.locked { overflow: hidden; }
+
+  .site-nav { background: #0a3d6b; padding: 0 16px; display: flex; align-items: center; gap: 2px; position: sticky; top: 0; z-index: 500; box-shadow: 0 2px 12px rgba(0,0,0,0.2); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav-brand { font-family: 'Playfair Display', serif; color: #ffd98a; font-size: 14px; font-weight: 700; padding: 13px 14px 13px 0; margin-right: 6px; border-right: 1px solid rgba(255,255,255,0.15); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .site-nav a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 12px; font-weight: 600; padding: 13px 11px; border-radius: 6px; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+  .site-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .site-nav a.active { color: #ffd98a; }
+
+  .hero { background: linear-gradient(160deg, var(--ocean) 0%, #1565a8 55%, #c97a2a 100%); padding: 40px 24px 32px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3C/g%3E%3C/svg%3E") repeat; pointer-events: none; }
+  .hero-palm { font-size: 48px; display: block; margin-bottom: 10px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 5vw, 44px); color: #fff; font-weight: 900; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+  .hero-sub { font-size: 13px; color: #ffd98a; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; font-weight: 500; }
+
+  .main { max-width: 800px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  /* SUMMARY CARDS */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .summary-card { background: #fff; border-radius: 14px; padding: 18px 16px; text-align: center; border: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .summary-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .summary-value { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
+  .summary-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* SETTLE UP */
+  .settle-card { border-radius: 14px; padding: 18px 20px; margin-bottom: 28px; border: 1px solid; }
+  .settle-card.balanced { background: var(--green-light); border-color: #a8dfc0; }
+  .settle-card.owes { background: var(--orange-light); border-color: #f5c89a; }
+  .settle-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .settle-detail { font-size: 13px; line-height: 1.6; }
+
+  /* ADD EXPENSE */
+  .add-card { background: #fff; border-radius: 16px; padding: 22px; border: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 28px; }
+  .add-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--ocean); margin-bottom: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-row.single { grid-template-columns: 1fr; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; }
+  .form-input, .form-select {
+    padding: 10px 14px; border-radius: 8px; border: 1.5px solid #d0c8ba;
+    font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text);
+    background: #fdfaf5; outline: none; transition: border 0.15s;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--orange); }
+  .add-btn {
+    width: 100%; padding: 12px; border-radius: 10px; border: none;
+    background: var(--orange); color: #fff; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s; margin-top: 4px;
+  }
+  .add-btn:hover { background: #c96a10; }
+
+  /* EXPENSE LIST */
+  .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #e8e0d0; }
+  .list-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ocean); }
+  .clear-btn { padding: 6px 14px; border-radius: 20px; border: 1.5px solid #d0c8ba; background: #fff; color: var(--muted); font-size: 11px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .clear-btn:hover { border-color: var(--red); color: var(--red); }
+
+  .expense-item { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 1px 6px rgba(0,0,0,0.04); margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+  .expense-icon { font-size: 24px; flex-shrink: 0; }
+  .expense-info { flex: 1; }
+  .expense-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .expense-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .expense-amount { text-align: right; flex-shrink: 0; }
+  .expense-total { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text); }
+  .expense-each { font-size: 11px; color: var(--muted); }
+  .expense-delete { background: none; border: none; cursor: pointer; font-size: 16px; color: #ccc; padding: 4px; transition: color 0.15s; flex-shrink: 0; }
+  .expense-delete:hover { color: var(--red); }
+
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 14px; }
+  .empty-state .empty-icon { font-size: 40px; display: block; margin-bottom: 10px; }
+
+  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } .summary-grid { grid-template-columns: repeat(2, 1fr); } .main { padding: 24px 14px 50px; } }
+</style>
+</head>
+<body>
+
+<div id="pw-overlay">
+  <div class="pw-palm">🌴</div>
+  <h2>Key West 2026</h2>
+  <p>Enter the trip password to continue</p>
+  <div id="pw-box">
+    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
+  </div>
+  <div id="pw-error"></div>
+</div>
+
+<div class="site-nav">
+  <a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 KW26</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/poll.html">🗳️ Vote</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/weather.html">🌤️ Weather</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/food.html">🍽️ Food Guide</a>
+  <a class="active" href="https://jeremyscrews-create.github.io/keywest2026/budget.html">💰 Budget</a>
+</div>
+
+<div class="hero">
+  <span class="hero-palm">💰</span>
+  <h1>Trip Budget</h1>
+  <p class="hero-sub">Split 2 Ways · Keely & Jeremy</p>
+</div>
+
+<div class="main">
+
+  <div class="summary-grid" id="summary-grid">
+    <div class="summary-card">
+      <div class="summary-label">Total Spent</div>
+      <div class="summary-value" id="s-total" style="color:var(--ocean)">$0</div>
+      <div class="summary-sub">all expenses</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Keely Paid</div>
+      <div class="summary-value" id="s-keely" style="color:var(--purple)">$0</div>
+      <div class="summary-sub">of total</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Jeremy Paid</div>
+      <div class="summary-value" id="s-jeremy" style="color:var(--blue)">$0</div>
+      <div class="summary-sub">of total</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Each Owes</div>
+      <div class="summary-value" id="s-each" style="color:var(--orange)">$0</div>
+      <div class="summary-sub">fair share</div>
+    </div>
+  </div>
+
+  <div id="settle-section"></div>
+
+  <!-- ADD EXPENSE -->
+  <div class="add-card">
+    <div class="add-title">➕ Add Expense</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <input class="form-input" id="f-desc" type="text" placeholder="e.g. Louie's Backyard dinner">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Amount ($)</label>
+        <input class="form-input" id="f-amount" type="number" placeholder="0.00" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Paid By</label>
+        <select class="form-select" id="f-payer">
+          <option value="Keely">Keely</option>
+          <option value="Jeremy">Jeremy</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="f-cat">
+          <option value="🍽️ Dining">🍽️ Dining</option>
+          <option value="🏨 Hotel">🏨 Hotel</option>
+          <option value="⛵ Activities">⛵ Activities</option>
+          <option value="🛵 Transport">🛵 Transport</option>
+          <option value="🍹 Drinks">🍹 Drinks</option>
+          <option value="🛍️ Shopping">🛍️ Shopping</option>
+          <option value="✈️ Flights">✈️ Flights</option>
+          <option value="💊 Other">💊 Other</option>
+        </select>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addExpense()">Add Expense</button>
+  </div>
+
+  <!-- LIST -->
+  <div class="list-header">
+    <div class="list-title">All Expenses</div>
+    <button class="clear-btn" onclick="clearAll()">Clear All</button>
+  </div>
+  <div id="expense-list"></div>
+
+</div>
+
+<script>
+(function() {
+  const overlay = document.getElementById('pw-overlay');
+  if (sessionStorage.getItem('kw2026_auth') === '1') { overlay.style.display = 'none'; }
+  else { document.body.classList.add('locked'); }
+})();
+function checkPw() {
+  if (document.getElementById('pw-input').value === 'ConchyKong') {
+    sessionStorage.setItem('kw2026_auth', '1');
+    document.getElementById('pw-overlay').style.display = 'none';
+    document.body.classList.remove('locked');
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect password — try again';
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+const STORAGE_KEY = 'kw2026_budget';
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; }
+}
+function save(expenses) { localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses)); }
+function fmt(n) { return '$' + n.toFixed(2); }
+
+function addExpense() {
+  const desc = document.getElementById('f-desc').value.trim();
+  const amount = parseFloat(document.getElementById('f-amount').value);
+  const payer = document.getElementById('f-payer').value;
+  const cat = document.getElementById('f-cat').value;
+
+  if (!desc) { alert('Please enter a description'); return; }
+  if (!amount || amount <= 0) { alert('Please enter a valid amount'); return; }
+
+  const expenses = load();
+  expenses.push({ id: Date.now(), desc, amount, payer, cat, date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}) });
+  save(expenses);
+
+  document.getElementById('f-desc').value = '';
+  document.getElementById('f-amount').value = '';
+  render();
+}
+
+function deleteExpense(id) {
+  const expenses = load().filter(e => e.id !== id);
+  save(expenses);
+  render();
+}
+
+function clearAll() {
+  if (confirm('Clear all expenses? This cannot be undone.')) {
+    save([]);
+    render();
+  }
+}
+
+function render() {
+  const expenses = load();
+  const total = expenses.reduce((s, e) => s + e.amount, 0);
+  const keelyPaid = expenses.filter(e => e.payer === 'Keely').reduce((s, e) => s + e.amount, 0);
+  const jeremyPaid = expenses.filter(e => e.payer === 'Jeremy').reduce((s, e) => s + e.amount, 0);
+  const fairShare = total / 2;
+  const keelyOwes = fairShare - keelyPaid; // positive = Keely owes Jeremy
+
+  document.getElementById('s-total').textContent = fmt(total);
+  document.getElementById('s-keely').textContent = fmt(keelyPaid);
+  document.getElementById('s-jeremy').textContent = fmt(jeremyPaid);
+  document.getElementById('s-each').textContent = fmt(fairShare);
+
+  // Settle up
+  let settleHtml = '';
+  if (total === 0) {
+    settleHtml = `<div class="settle-card balanced"><div class="settle-title">💸 No expenses yet</div><div class="settle-detail">Start adding expenses below to track who owes what.</div></div>`;
+  } else if (Math.abs(keelyOwes) < 0.01) {
+    settleHtml = `<div class="settle-card balanced"><div class="settle-title">✅ All settled up!</div><div class="settle-detail">Keely and Jeremy have each paid their fair share of ${fmt(fairShare)}.</div></div>`;
+  } else if (keelyOwes > 0) {
+    settleHtml = `<div class="settle-card owes"><div class="settle-title">💸 Settlement Needed</div><div class="settle-detail">Keely owes Jeremy <strong>${fmt(Math.abs(keelyOwes))}</strong><br>Jeremy paid ${fmt(jeremyPaid)} · Keely paid ${fmt(keelyPaid)} · Fair share is ${fmt(fairShare)} each.</div></div>`;
+  } else {
+    settleHtml = `<div class="settle-card owes"><div class="settle-title">💸 Settlement Needed</div><div class="settle-detail">Jeremy owes Keely <strong>${fmt(Math.abs(keelyOwes))}</strong><br>Keely paid ${fmt(keelyPaid)} · Jeremy paid ${fmt(jeremyPaid)} · Fair share is ${fmt(fairShare)} each.</div></div>`;
+  }
+  document.getElementById('settle-section').innerHTML = settleHtml;
+
+  // Expense list
+  const listEl = document.getElementById('expense-list');
+  if (expenses.length === 0) {
+    listEl.innerHTML = `<div class="empty-state"><span class="empty-icon">🧾</span>No expenses yet — add your first one above!</div>`;
+    return;
+  }
+
+  // Show newest first
+  const sorted = [...expenses].reverse();
+  listEl.innerHTML = sorted.map(e => {
+    const icon = e.cat.split(' ')[0];
+    const each = e.amount / 2;
+    return `<div class="expense-item">
+      <div class="expense-icon">${icon}</div>
+      <div class="expense-info">
+        <div class="expense-name">${e.desc}</div>
+        <div class="expense-meta">${e.cat} · Paid by ${e.payer} · ${e.date}</div>
+      </div>
+      <div class="expense-amount">
+        <div class="expense-total">${fmt(e.amount)}</div>
+        <div class="expense-each">${fmt(each)} each</div>
+      </div>
+      <button class="expense-delete" onclick="deleteExpense(${e.id})" title="Delete">✕</button>
+    </div>`;
+  }).join('');
+}
+
+render();
+</script>
+</body>
+</html>

@@ -247,6 +247,28 @@
     .countdown-num { font-size: 26px; }
   }
 
+  .site-nav-brand {
+    font-family: 'Playfair Display', serif;
+    color: #ffd98a; font-size: 15px; font-weight: 700;
+    padding: 14px 16px 14px 0; margin-right: 8px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    text-decoration: none; white-space: nowrap;
+  }
+  .site-nav a {
+    color: rgba(255,255,255,0.75); text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    padding: 14px 14px; border-radius: 6px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .site-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .site-nav a.active { color: #ffd98a; }
+  @media (max-width: 500px) {
+    .site-nav { padding: 0 12px; gap: 0; }
+    .site-nav a { padding: 10px 10px; font-size: 12px; }
+    .site-nav-brand { font-size: 13px; padding: 10px 12px 10px 0; }
+  }
+
+
   /* ── PASSWORD OVERLAY ── */
   #pw-overlay {
     position: fixed; inset: 0; z-index: 9999;
@@ -281,32 +303,29 @@
   /* ── NAV BAR ── */
   .site-nav {
     background: #0a3d6b;
-    padding: 0 24px;
-    display: flex; align-items: center; gap: 4px;
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 2px;
     position: sticky; top: 0; z-index: 500;
     box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-    flex-wrap: wrap;
+    overflow-x: auto; white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
   }
+  .site-nav::-webkit-scrollbar { display: none; }
   .site-nav-brand {
     font-family: 'Playfair Display', serif;
-    color: #ffd98a; font-size: 15px; font-weight: 700;
-    padding: 14px 16px 14px 0; margin-right: 8px;
+    color: #ffd98a; font-size: 14px; font-weight: 700;
+    padding: 13px 14px 13px 0; margin-right: 6px;
     border-right: 1px solid rgba(255,255,255,0.15);
-    text-decoration: none; white-space: nowrap;
+    text-decoration: none; white-space: nowrap; flex-shrink: 0;
   }
   .site-nav a {
     color: rgba(255,255,255,0.75); text-decoration: none;
-    font-size: 13px; font-weight: 600;
-    padding: 14px 14px; border-radius: 6px;
-    transition: all 0.15s; white-space: nowrap;
+    font-size: 12px; font-weight: 600;
+    padding: 13px 11px; border-radius: 6px;
+    transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
   }
   .site-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
   .site-nav a.active { color: #ffd98a; }
-  @media (max-width: 500px) {
-    .site-nav { padding: 0 12px; gap: 0; }
-    .site-nav a { padding: 10px 10px; font-size: 12px; }
-    .site-nav-brand { font-size: 13px; padding: 10px 12px 10px 0; }
-  }
 
 </style>
 </head>
@@ -323,7 +342,18 @@
   <div id="pw-error"></div>
 </div>
 
-<div class="site-nav"><a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 Key West 2026</a><a class="active" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a><a href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a><a href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a><a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a></div>
+<div class="site-nav"><a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 KW26</a><a class="active" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a><a href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a><a href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a><a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a><a href="https://jeremyscrews-create.github.io/keywest2026/poll.html">🗳️ Vote</a><a href="https://jeremyscrews-create.github.io/keywest2026/weather.html">🌤️ Weather</a><a href="https://jeremyscrews-create.github.io/keywest2026/food.html">🍽️ Food Guide</a><a href="https://jeremyscrews-create.github.io/keywest2026/budget.html">💰 Budget</a></div>
+
+<h2>Key West 2026</h2>
+  <p>Enter the trip password to continue</p>
+  <div id="pw-box">
+    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
+  </div>
+  <div id="pw-error"></div>
+</div>
+
+
 
 <div class="hero">
   <span class="hero-palm">🌴</span>
@@ -402,6 +432,58 @@
       <div class="nav-card-footer">
         <span class="nav-card-cta" style="color:var(--green)">Start packing →</span>
         <span class="nav-card-tag" style="background:var(--green-light);color:var(--green)">40+ items</span>
+      </div>
+    </a>
+
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/poll.html">
+      <div class="nav-card-stripe" style="background:var(--purple)"></div>
+      <div class="nav-card-body">
+        <span class="nav-card-icon">🗳️</span>
+        <div class="nav-card-title">Group Vote</div>
+        <div class="nav-card-desc">Vote on the undecided stuff — brunch spot, Friday activity, and post-cruise dinner. See live results as the group weighs in.</div>
+      </div>
+      <div class="nav-card-footer">
+        <span class="nav-card-cta" style="color:var(--purple)">Cast your vote →</span>
+        <span class="nav-card-tag" style="background:var(--purple-light);color:var(--purple)">3 polls open</span>
+      </div>
+    </a>
+
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/weather.html">
+      <div class="nav-card-stripe" style="background:var(--blue)"></div>
+      <div class="nav-card-body">
+        <span class="nav-card-icon">🌤️</span>
+        <div class="nav-card-title">Weather</div>
+        <div class="nav-card-desc">Live Key West forecast with day-by-day conditions for your trip dates. Know before you go.</div>
+      </div>
+      <div class="nav-card-footer">
+        <span class="nav-card-cta" style="color:var(--blue)">Check forecast →</span>
+        <span class="nav-card-tag" style="background:var(--blue-light);color:var(--blue)">Live data</span>
+      </div>
+    </a>
+
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/food.html">
+      <div class="nav-card-stripe" style="background:var(--orange)"></div>
+      <div class="nav-card-body">
+        <span class="nav-card-icon">🍽️</span>
+        <div class="nav-card-title">Food & Drinks Guide</div>
+        <div class="nav-card-desc">What to order at every stop — from conch fritters to lobster benedict to rum runners. Key West classics decoded.</div>
+      </div>
+      <div class="nav-card-footer">
+        <span class="nav-card-cta" style="color:var(--orange)">Explore food →</span>
+        <span class="nav-card-tag" style="background:var(--orange-light);color:var(--orange)">Must-tries inside</span>
+      </div>
+    </a>
+
+    <a class="nav-card" href="https://jeremyscrews-create.github.io/keywest2026/budget.html">
+      <div class="nav-card-stripe" style="background:var(--green)"></div>
+      <div class="nav-card-body">
+        <span class="nav-card-icon">💰</span>
+        <div class="nav-card-title">Budget Tracker</div>
+        <div class="nav-card-desc">Log shared expenses and see who owes who. Split 2 ways between Keely and Jeremy — settle up at the end.</div>
+      </div>
+      <div class="nav-card-footer">
+        <span class="nav-card-cta" style="color:var(--green)">Track expenses →</span>
+        <span class="nav-card-tag" style="background:var(--green-light);color:var(--green)">Split 2 ways</span>
       </div>
     </a>
 
@@ -502,9 +584,12 @@
   new MutationObserver(reportHeight).observe(document.body, { subtree: true, childList: true, attributes: true });
 </script>
 
+
+
+
 <script>
   (function() {
-    const PASS = "keywest2026";
+    const PASS = "ConchyKong";
     const KEY = "kw2026_auth";
     const overlay = document.getElementById('pw-overlay');
     if (sessionStorage.getItem(KEY) === '1') {
@@ -517,7 +602,7 @@
   function checkPw() {
     const val = document.getElementById('pw-input').value;
     const err = document.getElementById('pw-error');
-    if (val === 'keywest2026') {
+    if (val === 'ConchyKong') {
       sessionStorage.setItem('kw2026_auth', '1');
       document.getElementById('pw-overlay').style.display = 'none';
       document.body.classList.remove('locked');

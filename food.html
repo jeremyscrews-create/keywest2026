@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍽️ Food Guide · Key West 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #e07820; --orange-light: #fff0e0;
+    --green: #2a9d5c; --green-light: #e6f7ee;
+    --blue: #1565a8; --blue-light: #e8f0fa;
+    --purple: #9b5de5; --purple-light: #f3ecfd;
+    --red: #d63031; --red-light: #ffeaea;
+    --ocean: #0a3d6b; --sand: #fdf6e9;
+    --text: #1a1a2e; --muted: #7a7a99;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; }
+
+  #pw-overlay { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; }
+  #pw-overlay .pw-palm { font-size: 52px; }
+  #pw-overlay h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 26px; font-weight: 900; }
+  #pw-overlay p { color: rgba(255,255,255,0.7); font-size: 13px; }
+  #pw-box { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  #pw-input { padding: 12px 18px; border-radius: 10px; border: none; font-size: 15px; outline: none; width: 200px; text-align: center; letter-spacing: 2px; }
+  #pw-btn { padding: 12px 22px; border-radius: 10px; border: none; background: #e07820; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+  #pw-error { color: #ffd98a; font-size: 13px; min-height: 18px; }
+  body.locked { overflow: hidden; }
+
+  .site-nav { background: #0a3d6b; padding: 0 16px; display: flex; align-items: center; gap: 2px; position: sticky; top: 0; z-index: 500; box-shadow: 0 2px 12px rgba(0,0,0,0.2); overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav-brand { font-family: 'Playfair Display', serif; color: #ffd98a; font-size: 14px; font-weight: 700; padding: 13px 14px 13px 0; margin-right: 6px; border-right: 1px solid rgba(255,255,255,0.15); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .site-nav a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 12px; font-weight: 600; padding: 13px 11px; border-radius: 6px; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; }
+  .site-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .site-nav a.active { color: #ffd98a; }
+
+  .hero { background: linear-gradient(160deg, var(--ocean) 0%, #1565a8 55%, #c97a2a 100%); padding: 40px 24px 32px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='40' cy='40' r='30'/%3E%3C/g%3E%3C/svg%3E") repeat; pointer-events: none; }
+  .hero-palm { font-size: 48px; display: block; margin-bottom: 10px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(24px, 5vw, 44px); color: #fff; font-weight: 900; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+  .hero-sub { font-size: 13px; color: #ffd98a; letter-spacing: 3px; text-transform: uppercase; margin-top: 8px; font-weight: 500; }
+
+  .main { max-width: 1000px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .must-try-bar {
+    background: linear-gradient(135deg, #fff8e6, #fff3d4);
+    border: 1px solid #f5c842; border-radius: 14px;
+    padding: 18px 22px; margin-bottom: 32px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  }
+  .must-try-title { font-weight: 700; font-size: 14px; color: #7a5a00; margin-right: 6px; }
+  .must-pill {
+    background: #fff; border: 1px solid #f5c842; border-radius: 20px;
+    padding: 5px 12px; font-size: 12px; font-weight: 600; color: #7a5a00;
+  }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e8e0d0; }
+  .section-emoji { font-size: 24px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--ocean); }
+  .section { margin-bottom: 40px; }
+
+  .food-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+  .food-card { background: #fff; border-radius: 14px; border: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; }
+  .food-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+  .food-stripe { height: 5px; }
+  .food-body { padding: 16px 18px; }
+  .food-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+  .food-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .food-tag { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 2px 7px; border-radius: 20px; margin-top: 4px; display: inline-block; }
+  .food-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .food-where { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+  .food-desc { font-size: 12.5px; color: #555; line-height: 1.6; }
+  .food-footer { padding: 8px 18px 12px; border-top: 1px solid #f0ece4; }
+  .food-tip { font-size: 11px; color: var(--green); font-weight: 600; }
+
+  @media (max-width: 500px) { .food-grid { grid-template-columns: 1fr; } .main { padding: 24px 14px 50px; } }
+</style>
+</head>
+<body>
+
+<div id="pw-overlay">
+  <div class="pw-palm">🌴</div>
+  <h2>Key West 2026</h2>
+  <p>Enter the trip password to continue</p>
+  <div id="pw-box">
+    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
+  </div>
+  <div id="pw-error"></div>
+</div>
+
+<div class="site-nav">
+  <a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 KW26</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/poll.html">🗳️ Vote</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/weather.html">🌤️ Weather</a>
+  <a class="active" href="https://jeremyscrews-create.github.io/keywest2026/food.html">🍽️ Food Guide</a>
+  <a href="https://jeremyscrews-create.github.io/keywest2026/budget.html">💰 Budget</a>
+</div>
+
+<div class="hero">
+  <span class="hero-palm">🍽️</span>
+  <h1>Food & Drinks Guide</h1>
+  <p class="hero-sub">Key West · What to Order</p>
+</div>
+
+<div class="main">
+
+  <div class="must-try-bar">
+    <span class="must-try-title">🏆 Key West Must-Tries:</span>
+    <span class="must-pill">🍋 Key Lime Pie</span>
+    <span class="must-pill">🐚 Conch Fritters</span>
+    <span class="must-pill">☕ Cuban Coffee</span>
+    <span class="must-pill">🦞 Lobster Benedict</span>
+    <span class="must-pill">🍹 Rum Runner</span>
+    <span class="must-pill">🐟 Blackened Mahi</span>
+    <span class="must-pill">🥃 Margarita</span>
+  </div>
+
+  <!-- CONFIRMED RESTAURANTS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">✅</span>
+      <div class="section-title">Your Confirmed Restaurants</div>
+    </div>
+    <div class="food-grid">
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--orange)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--orange-light)">🌊</div>
+            <span class="food-tag" style="background:var(--orange-light);color:var(--orange)">Thu Dinner</span>
+          </div>
+          <div class="food-name">Louie's Backyard</div>
+          <div class="food-where">700 Waddell Ave · Oceanfront</div>
+          <div class="food-desc">One of the most beautiful dining settings in all of Key West — right on the water. Known for fresh local seafood, creative preparations, and stunning sunset views.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🍽️ Order: Fresh catch of the day, ceviche, anything with local fish</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--purple)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--purple-light)">🌮</div>
+            <span class="food-tag" style="background:var(--purple-light);color:var(--purple)">Fri Dinner</span>
+          </div>
+          <div class="food-name">Lolita's Coastal Cocina</div>
+          <div class="food-where">1 Duval St · Formal Night</div>
+          <div class="food-desc">Creative coastal Mexican cuisine with stunning views. Dressy attire — this is the fancy night of the trip. Known for elevated takes on Mexican classics with fresh local seafood.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🍽️ Order: Shrimp ceviche, house margarita, fresh fish tacos</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DRINKS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">🍹</span>
+      <div class="section-title">What to Drink in Key West</div>
+    </div>
+    <div class="food-grid">
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--orange)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--orange-light)">🍹</div>
+            <span class="food-tag" style="background:var(--orange-light);color:var(--orange)">Classic</span>
+          </div>
+          <div class="food-name">Rum Runner</div>
+          <div class="food-where">Everywhere — it's the Key West cocktail</div>
+          <div class="food-desc">The official drink of Key West. A tropical blend of rum, banana liqueur, blackberry brandy, grenadine, and OJ. Frozen or on the rocks. You must have at least one.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🏆 Best at: Sunset Watersports cruise bar</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--green)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--green-light)">☕</div>
+            <span class="food-tag" style="background:var(--green-light);color:var(--green)">Morning</span>
+          </div>
+          <div class="food-name">Cuban Coffee</div>
+          <div class="food-where">Cuban Coffee Queen — multiple locations</div>
+          <div class="food-desc">Strong, sweet espresso pulled Cuban-style. Get a café con leche with coffee ice cubes on a hot day. A Key West morning ritual and absolute must before any beach day.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">☕ Get an iced café con leche — trust us</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--blue)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--blue-light)">🍺</div>
+            <span class="food-tag" style="background:var(--blue-light);color:var(--blue)">Daytime</span>
+          </div>
+          <div class="food-name">Frozen Margarita</div>
+          <div class="food-where">Lolita's (Friday), or anywhere on Duval</div>
+          <div class="food-desc">Duval Street is lined with frozen drink windows. Walk and sip — it's basically encouraged. The house margarita at Lolita's is specifically worth trying.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🍹 Try the house margarita at Lolita's on Friday</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--purple)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--purple-light)">🥂</div>
+            <span class="food-tag" style="background:var(--purple-light);color:var(--purple)">Brunch</span>
+          </div>
+          <div class="food-name">Bottomless Mimosas</div>
+          <div class="food-where">Blue Heaven, Bagatelle, Hot Tin Roof</div>
+          <div class="food-desc">Key West brunch spots do mimosas right. Hot Tin Roof has a legendary Bloody Mary bar alongside bottomless mimosas. Perfect fuel for a Saturday on the golf cart.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🥂 Hot Tin Roof: unlimited Bloody Marys too</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- KEY WEST CLASSICS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-emoji">🏆</span>
+      <div class="section-title">Key West Food Classics</div>
+    </div>
+    <div class="food-grid">
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:#f5c842"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:#fff8e6">🍋</div>
+            <span class="food-tag" style="background:#fff8e6;color:#b07d00">Icon</span>
+          </div>
+          <div class="food-name">Key Lime Pie</div>
+          <div class="food-where">Blue Heaven, Kermit's Key Lime Shoppe</div>
+          <div class="food-desc">The real thing — tart, creamy, on a graham cracker crust. Try it frozen on a stick dipped in chocolate at Kermit's. Blue Heaven's version is legendary. Don't leave without trying both.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🍋 Kermit's frozen key lime pie on a stick is life-changing</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--orange)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--orange-light)">🐚</div>
+            <span class="food-tag" style="background:var(--orange-light);color:var(--orange)">Snack</span>
+          </div>
+          <div class="food-name">Conch Fritters</div>
+          <div class="food-where">Schooner Wharf, Sunset Pier, most bars</div>
+          <div class="food-desc">Deep-fried conch in a seasoned batter — the quintessential Key West snack. Crispy outside, tender inside. Best enjoyed with a cold drink at a waterfront bar post-cruise.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🐚 Best at Schooner Wharf Bar after the cruise</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--red)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--red-light)">🦞</div>
+            <span class="food-tag" style="background:var(--red-light);color:var(--red)">Splurge</span>
+          </div>
+          <div class="food-name">Lobster Benedict</div>
+          <div class="food-where">Blue Heaven, Hot Tin Roof</div>
+          <div class="food-desc">The Key West upgrade on eggs benedict — local Florida lobster instead of Canadian bacon. A brunch dish that justifies the Saturday golf cart trip to get there.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🦞 Blue Heaven's version is the most famous on the island</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--blue)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--blue-light)">🐟</div>
+            <span class="food-tag" style="background:var(--blue-light);color:var(--blue)">Local</span>
+          </div>
+          <div class="food-name">Fresh Mahi / Yellowtail</div>
+          <div class="food-where">Any seafood restaurant</div>
+          <div class="food-desc">Fish doesn't get fresher. Local fishermen supply the restaurants daily. Blackened mahi or grilled yellowtail snapper are the Key West standards. If it's on the menu, order it.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🐟 Always ask what was caught today</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--green)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--green-light)">🌯</div>
+            <span class="food-tag" style="background:var(--green-light);color:var(--green)">Lunch</span>
+          </div>
+          <div class="food-name">Cuban Sandwich</div>
+          <div class="food-where">Any Cuban café on Duval or nearby</div>
+          <div class="food-desc">Key West has a deep Cuban heritage and the sandwiches show it — pressed Cuban bread, mojo pork, ham, Swiss, pickles, mustard. Perfect Duval Street walking lunch.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🌯 Pair with a Cuban coffee for the full experience</div>
+        </div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-stripe" style="background:var(--purple)"></div>
+        <div class="food-body">
+          <div class="food-top">
+            <div class="food-icon" style="background:var(--purple-light)">🎸</div>
+            <span class="food-tag" style="background:var(--purple-light);color:var(--purple)">Bar Food</span>
+          </div>
+          <div class="food-name">Smokin' Tuna Nachos</div>
+          <div class="food-where">Smokin' Tuna Saloon · off Duval</div>
+          <div class="food-desc">The tuna nachos at Smokin' Tuna are legendary among locals. Pile of crispy chips topped with fresh tuna, avocado, and a kick of jalapeño. Perfect with a cold beer during the live music.</div>
+        </div>
+        <div class="food-footer">
+          <div class="food-tip">🎸 Go for the music, stay for the nachos</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const overlay = document.getElementById('pw-overlay');
+  if (sessionStorage.getItem('kw2026_auth') === '1') { overlay.style.display = 'none'; }
+  else { document.body.classList.add('locked'); }
+})();
+function checkPw() {
+  if (document.getElementById('pw-input').value === 'ConchyKong') {
+    sessionStorage.setItem('kw2026_auth', '1');
+    document.getElementById('pw-overlay').style.display = 'none';
+    document.body.classList.remove('locked');
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect password — try again';
+    document.getElementById('pw-input').value = '';
+  }
+}
+</script>
+</body>
+</html>
