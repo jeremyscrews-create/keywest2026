@@ -340,7 +340,7 @@
 </head>
 <body>
 
-<div id="pw-overlay" style="display:none">
+<div id="pw-overlay">
   <div class="pw-palm">🌴</div>
   <h2>Key West 2026</h2>
   <p>Enter the trip password to continue</p>
@@ -596,25 +596,25 @@
 
 <script>
   (function() {
-    const PASS = "ConchyKong";
-    const KEY = "kw2026_auth";
-    const overlay = document.getElementById('pw-overlay');
-    if (sessionStorage.getItem(KEY) === '1') {
+    var overlay = document.getElementById('pw-overlay');
+    if (sessionStorage.getItem('kw2026_auth') === '1') {
       overlay.style.display = 'none';
     } else {
-      document.body.classList.add('locked');
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
   })();
 
   function checkPw() {
-    const val = document.getElementById('pw-input').value;
-    const err = document.getElementById('pw-error');
+    var val = document.getElementById('pw-input').value;
+    var err = document.getElementById('pw-error');
     if (val === 'ConchyKong') {
       sessionStorage.setItem('kw2026_auth', '1');
       document.getElementById('pw-overlay').style.display = 'none';
-      document.body.classList.remove('locked');
+      document.body.style.overflow = '';
+      if (typeof loadWeather === 'function') loadWeather();
     } else {
-      err.textContent = 'Incorrect password — try again';
+      if (err) err.textContent = 'Incorrect password — try again';
       document.getElementById('pw-input').value = '';
       document.getElementById('pw-input').focus();
     }
