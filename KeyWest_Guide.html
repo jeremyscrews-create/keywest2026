@@ -222,9 +222,84 @@
     .hero { padding: 32px 16px 28px; }
     .legend-bar { gap: 12px; }
   }
+
+  /* ── PASSWORD OVERLAY ── */
+  #pw-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    background: linear-gradient(160deg, #0a3d6b 0%, #1565a8 55%, #c97a2a 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  #pw-overlay .pw-palm { font-size: 52px; }
+  #pw-overlay h2 {
+    font-family: 'Playfair Display', serif;
+    color: #fff; font-size: 26px; font-weight: 900;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  #pw-overlay p { color: rgba(255,255,255,0.7); font-size: 13px; }
+  #pw-box { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  #pw-input {
+    padding: 12px 18px; border-radius: 10px; border: none;
+    font-size: 15px; font-family: 'DM Sans', sans-serif;
+    outline: none; width: 200px; text-align: center; letter-spacing: 2px;
+  }
+  #pw-btn {
+    padding: 12px 22px; border-radius: 10px; border: none;
+    background: #e07820; color: #fff; font-size: 14px;
+    font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+  #pw-btn:hover { background: #c96a10; }
+  #pw-error { color: #ffd98a; font-size: 13px; min-height: 18px; }
+  body.locked { overflow: hidden; }
+
+  /* ── NAV BAR ── */
+  .site-nav {
+    background: #0a3d6b;
+    padding: 0 24px;
+    display: flex; align-items: center; gap: 4px;
+    position: sticky; top: 0; z-index: 500;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    flex-wrap: wrap;
+  }
+  .site-nav-brand {
+    font-family: 'Playfair Display', serif;
+    color: #ffd98a; font-size: 15px; font-weight: 700;
+    padding: 14px 16px 14px 0; margin-right: 8px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    text-decoration: none; white-space: nowrap;
+  }
+  .site-nav a {
+    color: rgba(255,255,255,0.75); text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    padding: 14px 14px; border-radius: 6px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .site-nav a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+  .site-nav a.active { color: #ffd98a; }
+  @media (max-width: 500px) {
+    .site-nav { padding: 0 12px; gap: 0; }
+    .site-nav a { padding: 10px 10px; font-size: 12px; }
+    .site-nav-brand { font-size: 13px; padding: 10px 12px 10px 0; }
+  }
+
 </style>
 </head>
 <body>
+
+<div id="pw-overlay">
+  <div class="pw-palm">🌴</div>
+  <h2>Key West 2026</h2>
+  <p>Enter the trip password to continue</p>
+  <div id="pw-box">
+    <input id="pw-input" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">Let's Go →</button>
+  </div>
+  <div id="pw-error"></div>
+</div>
+
+<div class="site-nav"><a class="site-nav-brand" href="https://jeremyscrews-create.github.io/keywest2026/index.html">🌴 Key West 2026</a><a href="https://jeremyscrews-create.github.io/keywest2026/index.html">🏠 Home</a><a class="active" href="https://jeremyscrews-create.github.io/keywest2026/KeyWest_Guide.html">🗓️ Itinerary</a><a href="https://jeremyscrews-create.github.io/keywest2026/contacts.html">📋 Contacts</a><a href="https://jeremyscrews-create.github.io/keywest2026/packing.html">🧳 Packing</a></div>
 
 <div class="hero">
   <span class="hero-palm">🌴</span>
@@ -702,6 +777,42 @@
       });
     });
   });
+</script>
+
+<script>
+  function reportHeight() {
+    window.parent.postMessage({ height: document.body.scrollHeight }, "*");
+  }
+  window.addEventListener("load", reportHeight);
+  window.addEventListener("resize", reportHeight);
+  new MutationObserver(reportHeight).observe(document.body, { subtree: true, childList: true, attributes: true });
+</script>
+
+<script>
+  (function() {
+    const PASS = "keywest2026";
+    const KEY = "kw2026_auth";
+    const overlay = document.getElementById('pw-overlay');
+    if (sessionStorage.getItem(KEY) === '1') {
+      overlay.style.display = 'none';
+    } else {
+      document.body.classList.add('locked');
+    }
+  })();
+
+  function checkPw() {
+    const val = document.getElementById('pw-input').value;
+    const err = document.getElementById('pw-error');
+    if (val === 'keywest2026') {
+      sessionStorage.setItem('kw2026_auth', '1');
+      document.getElementById('pw-overlay').style.display = 'none';
+      document.body.classList.remove('locked');
+    } else {
+      err.textContent = 'Incorrect password — try again';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
 </script>
 
 </body>
